@@ -46,6 +46,7 @@ import { UsersModule } from './users/users.module';
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
+      ssl: true,
       synchronize: true, // ❗ Turn off in production
     }),
 
