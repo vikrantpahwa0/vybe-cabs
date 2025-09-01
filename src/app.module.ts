@@ -49,7 +49,6 @@ import { UsersModule } from './users/users.module';
       synchronize: true, // ❗ Turn off in production
     }),
 
-    // JWT
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -59,7 +58,6 @@ import { UsersModule } from './users/users.module';
       }),
     }),
 
-    // Feature modules
     UsersModule,
   ],
   providers: [
