@@ -18,31 +18,8 @@ import { UsersModule } from './users/users.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      path: '/graphql',
-      introspection: true,
       playground: true,
-      context: ({ req, res }: { req: Request; res: Response }) => ({
-        req,
-        res,
-      }),
-    }),
-
-    // TypeORM with PostgreSQL
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT ?? '5432', 10),
-      username: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      database: process.env.DB_NAME,
-      autoLoadEntities: true,
-      synchronize: true, // ❗ Turn off in production,
-      ssl: true,
-    }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      playground: true,
+      path: '/graphql', // 👈 ensures it's available at /graphql
       context: ({ req, res }: { req: Request; res: Response }) => ({
         req,
         res,
@@ -59,7 +36,20 @@ import { UsersModule } from './users/users.module';
         };
       },
     }),
-    ConfigModule.forRoot(),
+
+    // TypeORM with PostgreSQL
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT ?? '5432', 10),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
+      autoLoadEntities: true,
+      synchronize: true, // ❗ Turn off in production
+    }),
+
+    // JWT
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -69,6 +59,7 @@ import { UsersModule } from './users/users.module';
       }),
     }),
 
+    // Feature modules
     UsersModule,
   ],
   providers: [
