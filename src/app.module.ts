@@ -19,6 +19,7 @@ import { UsersModule } from './users/users.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: true,
+      introspection: true,
       path: '/graphql', // 👈 ensures it's available at /graphql
       context: ({ req, res }: { req: Request; res: Response }) => ({
         req,
@@ -46,7 +47,7 @@ import { UsersModule } from './users/users.module';
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      ssl: true,
+      ssl: { rejectUnauthorized: false },
       synchronize: true, // ❗ Turn off in production
     }),
 
